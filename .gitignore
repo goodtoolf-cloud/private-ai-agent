@@ -1,0 +1,23 @@
+# FILE: .gitignore
+.env
+*.pyc
+__pycache__/
+*.pyo
+.DS_Store
+node_modules/
+dist/
+build/
+uploads/
+generated/
+models/
+*.onnx
+*.tflite
+*.bin
+chroma_data/
+postgres_data/
+*.log
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/

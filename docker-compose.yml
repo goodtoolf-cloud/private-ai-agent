@@ -1,0 +1,71 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: ai_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - CLOUDFLARE_ACCOUNT_ID=${CLOUDFLARE_ACCOUNT_ID}
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+      - DATABASE_URL=postgresql://ai_user:ai_pass@postgres:5432/ai_agent
+      - CHROMA_HOST=chroma
+      - CHROMA_PORT=8001
+      - SEARXNG_URL=http://searxng:8080
+      - SECRET_KEY=${SECRET_KEY:-changeme_long_random_string}
+    volumes:
+      - ./backend:/app
+      - uploads_data:/app/uploads
+      - generated_data:/app/generated
+    depends_on:
+      - postgres
+      - chroma
+      - searxng
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: ai_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: ai_postgres
+    environment:
+      POSTGRES_USER: ai_user
+      POSTGRES_PASSWORD: ai_pass
+      POSTGRES_DB: ai_agent
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  chroma:
+    image: chromadb/chroma:latest
+    container_name: ai_chroma
+    ports:
+      - "8001:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    restart: unless-stopped
+
+  searxng:
+    image: searxng/searxng:latest
+    container_name: ai_searxng
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./searxng:/etc/searxng:rw
+    environment:
+      - SEARXNG_BASE_URL=http://localhost:8080
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  chroma_data:
+  uploads_data:
+  generated_data:
