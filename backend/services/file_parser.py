@@ -7,7 +7,7 @@ import os
 import io
 from pathlib import Path
 import PyPDF2
-import polars as pd
+import pandas as pd
 from docx import Document as DocxDocument
 import base64
 from PIL import Image
