@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: 20
       - name: Install dependencies
-        run: cd cf-backend && npm install
+        run: cd cf-backend && npm install --registry https://registry.npmjs.org
       - name: Deploy
         run: cd cf-backend && npx wrangler deploy
         env:
