@@ -10,7 +10,7 @@ binding = "AI"
 [[d1_databases]]
 binding = "DB"
 database_name = "ai-agent-db"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "12f93cbc-53fc-44c8-9d7c-b480a3a4e80c"
 
 [[r2_buckets]]
 binding = "STORAGE"
@@ -26,7 +26,7 @@ index_name = "ai-agent-knowledge"
 
 [[kv_namespaces]]
 binding = "CACHE"
-id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+id = "0e6b40443e1d42b4b7384df435cc7cf5"
 
 [vars]
 SEARXNG_URL = "https://your-searxng-instance.com"
