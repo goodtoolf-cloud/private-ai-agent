@@ -13,7 +13,23 @@ jobs:
         with:
           node-version: 20
       - name: Install dependencies
-        run: cd cf-backend && npm install --registry https://registry.npmjs.org
+        run: cd cf-backend && npm install
+      - name: Install Wrangler
+        run: npm install -g wrangler@4
+      - name: Create KV Namespace
+        run: |
+          KV_ID=$(wrangler kv namespace create CACHE --preview false 2>&1 | grep -o '"[a-f0-9]\{32\}"' | tr -d '"' | head -1)
+          echo "KV_ID=$KV_ID" >> $GITHUB_ENV
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Create D1 Database
+        run: |
+          D1_ID=$(wrangler d1 create ai-agent-db 2>&1 | grep -o 'database_id = "[a-f0-9-]*"' | grep -o '"[a-f0-9-]*"' | tr -d '"' | head -1)
+          echo "D1_ID=$D1_ID" >> $GITHUB_ENV
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       - name: Deploy
         run: cd cf-backend && npx wrangler deploy
         env:
