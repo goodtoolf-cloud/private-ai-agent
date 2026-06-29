@@ -1,0 +1,37 @@
+# FILE: cf-backend/wrangler.toml
+name = "private-ai-agent"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+[ai]
+binding = "AI"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ai-agent-db"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+
+[[r2_buckets]]
+binding = "STORAGE"
+bucket_name = "ai-agent-files"
+
+[[vectorize]]
+binding = "VECTORIZE_MEMORY"
+index_name = "ai-agent-memory"
+
+[[vectorize]]
+binding = "VECTORIZE_KNOWLEDGE"
+index_name = "ai-agent-knowledge"
+
+[[kv_namespaces]]
+binding = "CACHE"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+[vars]
+SEARXNG_URL = "https://your-searxng-instance.com"
+E2B_API_KEY = ""
+ENVIRONMENT = "production"
+
+[triggers]
+crons = ["0 * * * *"]

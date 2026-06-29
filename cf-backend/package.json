@@ -1,0 +1,24 @@
+{
+  "name": "private-ai-agent-worker",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:init": "wrangler d1 execute ai-agent-db --file=schema.sql",
+    "db:init:remote": "wrangler d1 execute ai-agent-db --remote --file=schema.sql",
+    "vectorize:create:memory": "wrangler vectorize create ai-agent-memory --dimensions=384 --metric=cosine",
+    "vectorize:create:knowledge": "wrangler vectorize create ai-agent-knowledge --dimensions=384 --metric=cosine",
+    "r2:create": "wrangler r2 bucket create ai-agent-files",
+    "setup": "npm run r2:create && npm run vectorize:create:memory && npm run vectorize:create:knowledge",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "hono": "^4.6.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241106.0",
+    "typescript": "^5.6.3",
+    "wrangler": "^3.80.0"
+  }
+}
