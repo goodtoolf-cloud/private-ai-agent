@@ -230,7 +230,7 @@ export default function ChatPage() {
           <div className="mx-4 mt-3 flex items-start gap-2 bg-warning/10 border border-warning/30 text-warning rounded-lg px-3 py-2 text-sm">
             <AlertCircle size={14} className="mt-0.5 flex-shrink-0" />
             <span>{warning}</span>
-            <button onClick={() => setWarning(null)} className="ml-auto"><X size={14} /></button>
+            <button onClick={() => setWarning(null)} className="ml-auto"><X size=14 /></button>
           </div>
         )}
 
