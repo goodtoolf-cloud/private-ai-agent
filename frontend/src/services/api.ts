@@ -145,5 +145,6 @@ export const knowledgeAPI = {
   updateTrust: (id: string, trust_level: number) =>
     api.patch(`/knowledge/${id}/trust`, null, { params: { trust_level } }),
 
+  
   delete: (id: string) => api.delete(`/knowledge/${id}`),
 };
