@@ -20,7 +20,7 @@ Rules:
 - Never fabricate facts. Say you don't know rather than guess.
 - For research tasks: plan → gather → analyze → verify → answer.`;
 
-chatRouter.post("/", async (c) => {
+chatRouter.post("", async (c) => {
   const body = await c.req.json<{
     message: string;
     conversation_id?: string;
