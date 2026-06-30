@@ -6,7 +6,7 @@ import { searchWeb, fetchPageContent, researchTopic } from "../services/search";
 
 export const searchRouter = new Hono<{ Bindings: Env }>();
 
-searchRouter.post("/", async (c) => {
+searchRouter.post("", async (c) => {
   const { query, num_results = 10 } = await c.req.json<{ query: string; num_results?: number }>();
   if (!query) return c.json({ error: "query required" }, 400);
 
