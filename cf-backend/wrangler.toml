@@ -12,10 +12,6 @@ binding = "DB"
 database_name = "ai-agent-db"
 database_id = "12f93cbc-53fc-44c8-9d7c-b480a3a4e80c"
 
-[[r2_buckets]]
-binding = "STORAGE"
-bucket_name = "ai-agent-files"
-
 [[vectorize]]
 binding = "VECTORIZE_MEMORY"
 index_name = "ai-agent-memory"
