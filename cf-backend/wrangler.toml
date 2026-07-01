@@ -25,7 +25,7 @@ binding = "CACHE"
 id = "0e6b40443e1d42b4b7384df435cc7cf5"
 
 [vars]
-SEARXNG_URL = "https://kantan.cat/"
+SEARXNG_URL = "https://kantan.cat"
 E2B_API_KEY = ""
 ENVIRONMENT = "production"
 
