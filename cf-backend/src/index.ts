@@ -33,16 +33,16 @@ app.get("/api/health", (c) =>
 app.post("/api/test", (c) => c.json({ ok: true }));
 
 // Mount all routers
-app.route("/api/chat",      chatRouter);
-app.route("/api/files",     filesRouter);
-app.route("/api/search",    searchRouter);
-app.route("/api/images",    imagesRouter);
-app.route("/api/code",      codeRouter);
-app.route("/api/documents", documentsRouter);
-app.route("/api/voice",     voiceRouter);
-app.route("/api/memory",    memoryRouter);
-app.route("/api/alerts",    alertsRouter);
-app.route("/api/knowledge", knowledgeRouter);
+app.route("/api/chat/",      chatRouter);
+app.route("/api/files/",     filesRouter);
+app.route("/api/search/",    searchRouter);
+app.route("/api/images/",    imagesRouter);
+app.route("/api/code/",      codeRouter);
+app.route("/api/documents/", documentsRouter);
+app.route("/api/voice/",     voiceRouter);
+app.route("/api/memory/",    memoryRouter);
+app.route("/api/alerts/",    alertsRouter);
+app.route("/api/knowledge/", knowledgeRouter);
 
 // 404 fallback
 app.notFound((c) => c.json({ error: "Not found" }, 404));
