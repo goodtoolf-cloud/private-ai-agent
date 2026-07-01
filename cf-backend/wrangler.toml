@@ -25,7 +25,7 @@ binding = "CACHE"
 id = "0e6b40443e1d42b4b7384df435cc7cf5"
 
 [vars]
-SEARXNG_URL = "https://your-searxng-instance.com"
+SEARXNG_URL = "https://searx.be"
 E2B_API_KEY = ""
 ENVIRONMENT = "production"
 
