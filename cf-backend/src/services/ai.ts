@@ -44,7 +44,7 @@ export async function embedText(env: Env, text: string): Promise<number[]> {
 export async function generateImage(
   env: Env,
   prompt: string,
-  steps = 20
+  steps = 8
 ): Promise<ArrayBuffer> {
   const response = await env.AI.run(
     "@cf/stabilityai/stable-diffusion-xl-base-1.0" as any,
@@ -52,8 +52,8 @@ export async function generateImage(
       prompt,
       negative_prompt: "blurry, low quality, distorted, ugly, watermark",
       num_steps: steps,
-      width: 1024,
-      height: 1024,
+      width: 512,
+      height: 512,
     } as any
   );
   return response as unknown as ArrayBuffer;
@@ -78,7 +78,7 @@ export async function translateText(
   targetLang: string,
   sourceLang = "en"
 ): Promise<string> {
-  const response = await env.AI.run("@cf/meta/m2m100-1.2b" as any, {
+  const response = await env.AI.run("@cf/meta/m2m100-1.2b" as any, {5
     text,
     source_lang: sourceLang,
     target_lang: targetLang,
