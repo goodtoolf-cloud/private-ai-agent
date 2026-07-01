@@ -15,7 +15,12 @@ imagesRouter.post("/generate", async (c) => {
   if (!prompt) return c.json({ error: "prompt required" }, 400);
 
   const imageBuffer = await generateImage(c.env, prompt, steps);
-  const base64 = btoa(String.fromCharCode(...new Uint8Array(imageBuffer)));
+  const bytes = new Uint8Array(imageBuffer);
+let binary = "";
+for (let i = 0; i < bytes.byteLength; i++) {
+  binary += String.fromCharCode(bytes[i]);
+}
+const base64 = btoa(binary);
   const url = `data:image/png;base64,${base64}`;
 
   return c.json({ url, prompt, width: 1024, height: 1024 });
