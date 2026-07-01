@@ -78,7 +78,7 @@ export async function translateText(
   targetLang: string,
   sourceLang = "en"
 ): Promise<string> {
-  const response = await env.AI.run("@cf/meta/m2m100-1.2b" as any, {5
+  const response = await env.AI.run("@cf/meta/m2m100-1.2b" as any, {
     text,
     source_lang: sourceLang,
     target_lang: targetLang,
