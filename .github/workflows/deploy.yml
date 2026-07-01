@@ -16,6 +16,11 @@ jobs:
         run: npm install -g wrangler
       - name: Install dependencies
         run: cd cf-backend && npm install
+      - name: Initialize D1 Schema
+        run: cd cf-backend && npx wrangler d1 execute ai-agent-db --remote --file=schema.sql
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       - name: Deploy
         run: cd cf-backend && npx wrangler deploy
         env:
