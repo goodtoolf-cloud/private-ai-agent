@@ -30,6 +30,7 @@ app.use("*", cors({
 app.get("/api/health", (c) =>
   c.json({ status: "ok", version: "1.0.0", runtime: "Cloudflare Workers" })
 );
+app.post("/api/test", (c) => c.json({ ok: true }));
 
 // Mount all routers
 app.route("/api/chat",      chatRouter);
