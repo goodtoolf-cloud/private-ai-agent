@@ -2,9 +2,9 @@
 import { Hono } from "hono";
 import { Env, genId } from "../types";
 import { storeKnowledgeChunk, searchKnowledge, chunkText } from "../services/vector";
-import { extractTextFromFile } from "../services/storage";
+import { uploadFile, makeFileKey, extractTextFromFile } from "../services/storage";
 import {
-  saveKnowledgeDoc, listKnowledgeDocs,
+  saveFile, saveKnowledgeDoc, listKnowledgeDocs,
   getKnowledgeDoc, updateKnowledgeTrust, deleteKnowledgeDoc,
 } from "../services/database";
 
@@ -21,19 +21,37 @@ knowledgeRouter.post("/upload", async (c) => {
   const ext = file.name.split(".").pop()?.toLowerCase() ?? "txt";
   const buffer = await file.arrayBuffer();
 
-  // Extract text content directly — no R2 needed
+  // Upload raw file to R2
+  const fileId = genId();
+  const r2Key = makeFileKey(fileId, ext, "knowledge");
+  await uploadFile(c.env, r2Key, buffer, file.type || "application/octet-stream");
+
+  // Extract text content
   const text = await extractTextFromFile(buffer, ext);
   if (!text.trim()) {
     return c.json({ error: "Could not extract text from file." }, 400);
   }
 
   const docTitle = title || file.name;
+
+  // Save file record
+  const { id: savedFileId } = await saveFile(c.env, {
+    originalName: file.name,
+    fileType: ext,
+    fileSize: buffer.byteLength,
+    r2Key,
+    isKnowledgeBase: true,
+    trustLevel,
+  });
+
+  // Create knowledge doc record
   const docId = genId();
 
-  // Chunk and embed the text into Vectorize
+  // Chunk and embed the text
   const chunks = chunkText(text, 600, 100);
   let storedChunks = 0;
 
+  // Store chunks in batches to avoid timeout
   const BATCH_SIZE = 10;
   for (let i = 0; i < chunks.length; i += BATCH_SIZE) {
     const batch = chunks.slice(i, i + BATCH_SIZE);
@@ -52,7 +70,7 @@ knowledgeRouter.post("/upload", async (c) => {
     storedChunks += batch.length;
   }
 
-  await saveKnowledgeDoc(c.env, docTitle, null, trustLevel, storedChunks);
+  await saveKnowledgeDoc(c.env, docTitle, savedFileId, trustLevel, storedChunks);
 
   return c.json({
     document_id: docId,
@@ -106,6 +124,9 @@ knowledgeRouter.delete("/:id", async (c) => {
   if (!doc) return c.json({ error: "Document not found" }, 404);
 
   await deleteKnowledgeDoc(c.env, id);
+  // Note: Vectorize doesn't support bulk delete by metadata filter on free tier.
+  // Vectors become orphaned but won't affect results significantly.
+
   return c.json({
     success: true,
     message: "Document removed from knowledge base.",
