@@ -8,8 +8,8 @@ export interface Env {
   // D1 SQL database
   DB: D1Database;
 
-  // R2 object storage
-  STORAGE: R2Bucket;
+  // R2 object storage (optional)
+  STORAGE?: R2Bucket;
 
   // Vectorize indexes
   VECTORIZE_MEMORY: VectorizeIndex;
